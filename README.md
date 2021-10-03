@@ -10,6 +10,17 @@ The NeosRulez.Neos.PasswordReset is listed on packagist (https://packagist.org/p
 
 Just run ```composer require neosrulez/neos-passwordreset```
 
+## Settings.yaml
+
+```yaml
+NeosRulez:
+  Neos:
+    PasswordReset:
+      senderMail: 'noreply@foo.com'
+      adminMail: 'admin@foo.com' # Disable if you not want to recieve info mails.
+      templatePathAndFilename: 'resource://NeosRulez.Neos.PasswordReset/Private/Templates/Mail.html'
+```
+
 ## Author
 
 * E-Mail: mail@patriceckhart.com
