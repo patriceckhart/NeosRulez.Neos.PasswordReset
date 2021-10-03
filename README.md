@@ -21,6 +21,10 @@ NeosRulez:
       templatePathAndFilename: 'resource://NeosRulez.Neos.PasswordReset/Private/Templates/Mail.html'
 ```
 
+## Double Opt-in ...
+
+... is coming soon.
+
 ## Author
 
 * E-Mail: mail@patriceckhart.com
