@@ -1,0 +1,70 @@
+include: resource://Neos.Neos/Private/Fusion/Backend/Views/Login.fusion
+include: resource://Neos.Fusion/Private/Fusion/Root.fusion
+include: resource://Neos.Fusion.Form/Private/Fusion/Root.fusion
+
+Neos.Neos.LoginController.index = Neos.Neos:View.Login {
+    site = ${site}
+    styles = ${styles}
+    username = ${username}
+    flashMessages = ${flashMessages}
+}
+
+prototype(NeosRulez.Neos.PasswordReset:Component.PasswordReset) < prototype(Neos.Fusion:Component) {
+
+    renderer = afx`
+        <style>{"
+            #passwort__Reset_Button button, #goto__Login_Button button { border:0; background:0; outline:0; padding:0; margin:0; color:#ffffff; font-size:14px; margin-top:16px; font-family: 'Noto Sans', sans-serif; -webkit-font-smoothing: antialiased; }
+            #passwort__Reset_Button button:hover, #goto__Login_Button button:hover { text-decoration:underline; }
+            .button--Wrap { display:block; text-align:center; }
+        "}</style>
+        <div id="passwort__Reset_Button" class="button--Wrap">
+            <button type="button" onclick="hide('passwort__Reset_Button');hide('login__Form');show('passwort__Reset');">{I18n.id('content.resetPasswort').package('NeosRulez.Neos.PasswordReset').source('Main')}</button>
+        </div>
+        <div id="passwort__Reset" style="display:none">
+            <Neos.Fusion.Form:Form form.target.action="execute" form.target.controller="Reset" form.target.package="NeosRulez.Neos.PasswordReset" attributes.name="reset">
+                <fieldset>
+                    <div class="neos-controls neos-controls-string">
+                        <Neos.Fusion.Form:Input
+                            field.name="string"
+                            field.value={props.username}
+                            attributes.required="required"
+                            attributes.id="username_email_string"
+                            attributes.placeholder={I18n.id('username').value('Username').package('Neos.Neos').source('Main')}
+                            attributes.class="neos-span12 input"
+                            attributes.autofocus="true"
+                            attributes.aria-label={I18n.id('username').value('Username').package('Neos.Neos').source('Main')}
+                        />
+                    </div>
+                    <div class="neos-actions">
+                        <Neos.Fusion.Form:Button attributes.class="neos-span5 neos-pull-right neos-button neos-login-btn neos-passwordreset-btn">
+                            {I18n.id('content.resetPasswort').package('NeosRulez.Neos.PasswordReset').source('Main')}
+                        </Neos.Fusion.Form:Button>
+                    </div>
+                </fieldset>
+            </Neos.Fusion.Form:Form>
+            <div id="goto__Login_Button" class="button--Wrap">
+                <button type="button" onclick="hide('passwort__Reset');show('login__Form');show('passwort__Reset_Button');">{I18n.id('content.backToLogin').package('NeosRulez.Neos.PasswordReset').source('Main')}</button>
+            </div>
+        </div>
+        <script>{"
+        function hide(el) {
+            var elem = document.getElementById(el);
+            elem.style.display = 'none';
+        }
+        function show(el) {
+            var elem = document.getElementById(el);
+            elem.style.display = 'block';
+        }
+        "}</script>
+    `
+}
+
+prototype(Neos.Neos:Component.Login.Form) {
+    renderer {
+        prototype(Neos.Fusion.Form:Form) {
+            attributes.id = 'login__Form'
+        }
+    }
+    @context.passwordResetComponent = NeosRulez.Neos.PasswordReset:Component.PasswordReset
+    renderer.@process.passwordReset = ${value + passwordResetComponent}
+}

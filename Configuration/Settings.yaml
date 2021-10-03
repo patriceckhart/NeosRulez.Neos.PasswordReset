@@ -1,0 +1,20 @@
+Neos:
+  Flow:
+    mvc:
+      routes:
+        'NeosRulez.Neos.PasswordReset': true
+  Neos:
+    fusion:
+      autoInclude:
+        NeosRulez.Neos.PasswordReset: true
+    userInterface:
+      translation:
+        autoInclude:
+          NeosRulez.Neos.PasswordReset:
+            - Main
+NeosRulez:
+  Neos:
+    PasswordReset:
+      senderMail: 'noreply@foo.com'
+      adminMail: 'admin@foo.com' # Disable if you not want to recieve info mails.
+      templatePathAndFilename: 'resource://NeosRulez.Neos.PasswordReset/Private/Templates/Mail.html'

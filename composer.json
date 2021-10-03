@@ -1,0 +1,19 @@
+{
+    "description": "A Neos CMS package that adds password reset functionality to Neos backend login form",
+    "type": "neos-package",
+    "name": "neosrulez/neos-passwordreset",
+    "require": {
+        "neos/neos": "*",
+        "neos/swiftmailer": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "NeosRulez\\Neos\\PasswordReset\\": "Classes/"
+        }
+    },
+    "extra": {
+        "neos": {
+            "package-key": "NeosRulez.Neos.PasswordReset"
+        }
+    }
+}
