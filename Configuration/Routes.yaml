@@ -6,3 +6,11 @@
     '@package': 'NeosRulez.Neos.PasswordReset'
     '@action': 'execute'
   appendExceedingArguments: true
+-
+  name: 'Reset password'
+  uriPattern: 'neos/newpassword/{token}'
+  defaults:
+    '@controller': 'Reset'
+    '@package': 'NeosRulez.Neos.PasswordReset'
+    '@action': 'setNewPassword'
+  appendExceedingArguments: true

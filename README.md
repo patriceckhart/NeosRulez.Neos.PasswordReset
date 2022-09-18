@@ -17,13 +17,15 @@ NeosRulez:
   Neos:
     PasswordReset:
       senderMail: 'noreply@foo.com'
-      adminMail: 'admin@foo.com' # Disable if you not want to recieve info mails.
-      templatePathAndFilename: 'resource://NeosRulez.Neos.PasswordReset/Private/Templates/Mail.html'
+      adminMail: 'admin@foo.com' # Disable (set it to false) if you not want to recieve info mails.
+      passwordLength: 8
+      tokenLifetime: 5 # Reset token lifetime in minutes
+      confirmation:
+        templatePathAndFilename: 'resource://NeosRulez.Neos.PasswordReset/Private/Templates/Confirmation.html'
+      reset:
+        templatePathAndFilename: 'resource://NeosRulez.Neos.PasswordReset/Private/Templates/Reset.html'
+
 ```
-
-## Double Opt-in ...
-
-... is coming soon.
 
 ## Author
 

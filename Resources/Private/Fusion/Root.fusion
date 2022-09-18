@@ -18,7 +18,7 @@ prototype(NeosRulez.Neos.PasswordReset:Component.PasswordReset) < prototype(Neos
             .button--Wrap { display:block; text-align:center; }
         "}</style>
         <div id="passwort__Reset_Button" class="button--Wrap">
-            <button type="button" onclick="hide('passwort__Reset_Button');hide('login__Form');show('passwort__Reset');">{I18n.id('content.resetPasswort').package('NeosRulez.Neos.PasswordReset').source('Main')}</button>
+            <button type="button" onclick="hide('passwort__Reset_Button');hide('login__Form');show('passwort__Reset');">{I18n.id('content.forgotPassword').package('NeosRulez.Neos.PasswordReset').source('Main')}</button>
         </div>
         <div id="passwort__Reset" style="display:none">
             <Neos.Fusion.Form:Form form.target.action="execute" form.target.controller="Reset" form.target.package="NeosRulez.Neos.PasswordReset" attributes.name="reset">
@@ -37,7 +37,7 @@ prototype(NeosRulez.Neos.PasswordReset:Component.PasswordReset) < prototype(Neos
                     </div>
                     <div class="neos-actions">
                         <Neos.Fusion.Form:Button attributes.class="neos-span5 neos-pull-right neos-button neos-login-btn neos-passwordreset-btn">
-                            {I18n.id('content.resetPasswort').package('NeosRulez.Neos.PasswordReset').source('Main')}
+                            {I18n.id('content.resetPassword').package('NeosRulez.Neos.PasswordReset').source('Main')}
                         </Neos.Fusion.Form:Button>
                     </div>
                 </fieldset>

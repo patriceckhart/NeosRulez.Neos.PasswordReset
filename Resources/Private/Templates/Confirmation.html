@@ -1,0 +1,11 @@
+<f:if condition="{isInfo}">
+    <f:then>
+        <strong>{username}</strong> has requested a password reset.
+    </f:then>
+    <f:else>
+        <h3>You have requested a password reset.</h3>
+        <p>If you want to reset your password, click on the following link:</p>
+        <p>{host}/neos/newpassword/{token}</p>
+        <p>If you haven't reset your password, delete this mail.</p>
+    </f:else>
+</f:if>

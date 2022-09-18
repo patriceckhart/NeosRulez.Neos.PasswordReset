@@ -2,17 +2,29 @@
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
     <file original="" product-name="NeosRulez.Neos.PasswordReset" source-language="de" datatype="plaintext">
         <body>
+			<trans-unit id="content.confirmationSent" xml:space="preserve">
+				<source>Link wurde per Mail versendet</source>
+			</trans-unit>
             <trans-unit id="content.credentialsSent" xml:space="preserve">
 				<source>Passwort zurückgesetzt</source>
 			</trans-unit>
             <trans-unit id="content.userNotFound" xml:space="preserve">
-				<source>Benutzer nicht gefunden</source>
+				<source>Es existiert keine E-Mail Adresse zum angegebenen Benutzer</source>
 			</trans-unit>
-            <trans-unit id="content.resetPasswort" xml:space="preserve">
+            <trans-unit id="content.resetPassword" xml:space="preserve">
 				<source>Passwort zurücksetzen</source>
+			</trans-unit>
+			<trans-unit id="content.forgotPassword" xml:space="preserve">
+				<source>Passwort vergessen</source>
 			</trans-unit>
             <trans-unit id="content.backToLogin" xml:space="preserve">
 				<source>Zurück zum Login</source>
+			</trans-unit>
+            <trans-unit id="content.tokenInvalid" xml:space="preserve">
+				<source>Token ungültig</source>
+			</trans-unit>
+			<trans-unit id="content.passwordReset" xml:space="preserve">
+				<source>Passwort wurde zurückgesetzt und per Mail versendet</source>
 			</trans-unit>
         </body>
     </file>

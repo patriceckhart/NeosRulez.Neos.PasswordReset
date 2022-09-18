@@ -13,10 +13,10 @@ use Neos\Neos\Domain\Model\User as User;
 class UserService extends \Neos\Neos\Domain\Service\UserService {
 
     /**
-     * @param string $length
+     * @param int $length
      * @return string
      */
-    public function generatePassword($length = 8):string
+    public function generatePassword(int $length = 8):string
     {
         $chars = '23456789bcdfhkmnprstvzBCDFHJKLMNPRSTVZ';
         $shuffled = str_shuffle($chars);
