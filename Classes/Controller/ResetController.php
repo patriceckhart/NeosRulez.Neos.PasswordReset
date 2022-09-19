@@ -87,7 +87,7 @@ class ResetController extends ActionController
         if($tokens->count() > 0) {
             if($tokens->getFirst()->isValid()) {
                 $password = $this->userService->generatePassword($this->settings['passwordLength']);
-                $this->userService->setUserPassword($tokens->getFirst()->getUser(), $authenticationProviderName, $password);
+                $this->userService->setUserPassword($tokens->getFirst()->getUser(), $password);
                 if(@$tokens->getFirst()->getUser()->getElectronicAddresses()) {
                     foreach ($tokens->getFirst()->getUser()->getElectronicAddresses() as $electronicAddress) {
                         if ($electronicAddress->getType() == 'Email') {
