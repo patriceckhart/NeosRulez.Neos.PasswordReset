@@ -56,23 +56,38 @@ class ResetController extends ActionController
      */
     public function executeAction(string $string, string $authenticationProviderName = 'Neos.Neos:Backend'):void
     {
-        try {
-            if(@$this->userService->getUser($string, $authenticationProviderName)->getElectronicAddresses()) {
-                $user = $this->userService->getUser($string, $authenticationProviderName);
-                foreach ($user->getElectronicAddresses() as $electronicAddress) {
-                    if($electronicAddress->getType() == 'Email') {
-                        $protocol = !str_contains(strtolower($_SERVER['SERVER_PROTOCOL']), 'https') ? 'http' : 'https';
-                        $host = $protocol . '://' . $_SERVER['HTTP_HOST'];
-                        $token = $this->tokenRepository->persist($user);
-                        $subject = $this->translator->translateById('content.resetPassword', [], null, null, $sourceName = 'Main', $packageKey = 'NeosRulez.Neos.PasswordReset');
-                        $this->mailService->sendMail(['email' => $electronicAddress->getIdentifier(), 'host' => $host, 'token' => $token], $this->settings['senderMail'], $electronicAddress->getIdentifier(), $subject, $this->settings['confirmation']['templatePathAndFilename']);
-                        $this->addFlashMessage($this->translator->translateById('content.confirmationSent', [], null, null, $sourceName = 'Main', $packageKey = 'NeosRulez.Neos.PasswordReset'), '', Message::SEVERITY_NOTICE);
+        if($this->userService->getUser($string, $authenticationProviderName)) {
+            $user = $this->userService->getUser($string, $authenticationProviderName);
+
+            $userMail = false;
+            $accountIdentifier = $user->getAccounts()[0]->getAccountIdentifier();
+            if(filter_var($accountIdentifier, FILTER_VALIDATE_EMAIL)) {
+                $userMail = $accountIdentifier;
+            }
+
+            $protocol = !str_contains(strtolower($_SERVER['SERVER_PROTOCOL']), 'https') ? 'http' : 'https';
+            $host = $protocol . '://' . $_SERVER['HTTP_HOST'];
+            $token = $this->tokenRepository->persist($user);
+            $subject = $this->translator->translateById('content.resetPassword', [], null, null, $sourceName = 'Main', $packageKey = 'NeosRulez.Neos.PasswordReset');
+
+            if(!$userMail) {
+                if($user->getElectronicAddresses()) {
+                    foreach ($user->getElectronicAddresses() as $electronicAddress) {
+                        if($electronicAddress->getType() == 'Email') {
+                            $this->mailService->sendMail(['mailVariables' => (array_key_exists('mailVariables', $this->settings) ? $this->settings['mailVariables'] : false), 'email' => $electronicAddress->getIdentifier(), 'host' => $host, 'domain' => $_SERVER['HTTP_HOST'], 'token' => $token], $this->settings['senderMail'], $electronicAddress->getIdentifier(), $subject, $this->settings['confirmation']['templatePathAndFilename']);
+                        }
                     }
                 }
+            } else {
+                $this->mailService->sendMail(['mailVariables' => (array_key_exists('mailVariables', $this->settings) ? $this->settings['mailVariables'] : false), 'email' => $userMail, 'host' => $host, 'domain' => $_SERVER['HTTP_HOST'], 'token' => $token], $this->settings['senderMail'], $userMail, $subject, $this->settings['confirmation']['templatePathAndFilename']);
             }
-        } catch (\Error $e) {
+
+            $this->addFlashMessage($this->translator->translateById('content.confirmationSent', [], null, null, $sourceName = 'Main', $packageKey = 'NeosRulez.Neos.PasswordReset'), '', Message::SEVERITY_NOTICE);
+
+        } else {
             $this->addFlashMessage($this->translator->translateById('content.userNotFound', [], null, null, $sourceName = 'Main', $packageKey = 'NeosRulez.Neos.PasswordReset'), '', Message::SEVERITY_ERROR);
         }
+
         $this->redirect('index', 'login', 'Neos.Neos');
     }
 
@@ -86,19 +101,33 @@ class ResetController extends ActionController
         $tokens = $this->tokenRepository->findByToken($token);
         if($tokens->count() > 0) {
             if($tokens->getFirst()->isValid()) {
+                $protocol = !str_contains(strtolower($_SERVER['SERVER_PROTOCOL']), 'https') ? 'http' : 'https';
+                $host = $protocol . '://' . $_SERVER['HTTP_HOST'];
                 $password = $this->userService->generatePassword($this->settings['passwordLength']);
                 $this->userService->setUserPassword($tokens->getFirst()->getUser(), $password);
-                if(@$tokens->getFirst()->getUser()->getElectronicAddresses()) {
-                    foreach ($tokens->getFirst()->getUser()->getElectronicAddresses() as $electronicAddress) {
-                        if ($electronicAddress->getType() == 'Email') {
-                            $subject = $this->translator->translateById('content.credentialsSent', [], null, null, $sourceName = 'Main', $packageKey = 'NeosRulez.Neos.PasswordReset');
-                            $this->mailService->sendMail(['email' => $electronicAddress->getIdentifier(), 'user' => $tokens->getFirst()->getUser(), 'username' => $tokens->getFirst()->getUser()->getAccounts()[0]->getAccountIdentifier(), 'password' => $password], $this->settings['senderMail'], $electronicAddress->getIdentifier(), $subject, $this->settings['reset']['templatePathAndFilename']);
+
+                $userMail = false;
+                $accountIdentifier = $tokens->getFirst()->getUser()->getAccounts()[0]->getAccountIdentifier();
+                if(filter_var($accountIdentifier, FILTER_VALIDATE_EMAIL)) {
+                    $userMail = $accountIdentifier;
+                }
+                $subject = $this->translator->translateById('content.credentialsSent', [], null, null, $sourceName = 'Main', $packageKey = 'NeosRulez.Neos.PasswordReset');
+
+                if(!$userMail) {
+                    if(@$tokens->getFirst()->getUser()->getElectronicAddresses()) {
+                        foreach ($tokens->getFirst()->getUser()->getElectronicAddresses() as $electronicAddress) {
+                            if ($electronicAddress->getType() == 'Email') {
+                                $this->mailService->sendMail(['mailVariables' => (array_key_exists('mailVariables', $this->settings) ? $this->settings['mailVariables'] : false), 'host' => $host, 'domain' => $_SERVER['HTTP_HOST'], 'email' => $electronicAddress->getIdentifier(), 'user' => $tokens->getFirst()->getUser(), 'username' => $tokens->getFirst()->getUser()->getAccounts()[0]->getAccountIdentifier(), 'password' => $password], $this->settings['senderMail'], $electronicAddress->getIdentifier(), $subject, $this->settings['reset']['templatePathAndFilename']);
+                            }
                         }
                     }
+                } else {
+                    $this->mailService->sendMail(['mailVariables' => (array_key_exists('mailVariables', $this->settings) ? $this->settings['mailVariables'] : false), 'host' => $host, 'domain' => $_SERVER['HTTP_HOST'], 'email' => $userMail, 'user' => $tokens->getFirst()->getUser(), 'username' => $tokens->getFirst()->getUser()->getAccounts()[0]->getAccountIdentifier(), 'password' => $password], $this->settings['senderMail'], $userMail, $subject, $this->settings['reset']['templatePathAndFilename']);
                 }
+
                 if(array_key_exists('adminMail', $this->settings)) {
                     $subject = $this->translator->translateById('content.credentialsSent', [], null, null, $sourceName = 'Main', $packageKey = 'NeosRulez.Neos.PasswordReset');
-                    $this->mailService->sendMail(['username' => $tokens->getFirst()->getUser()->getAccounts()[0]->getAccountIdentifier(), 'isInfo' => true], $this->settings['senderMail'], $this->settings['adminMail'], $subject, $this->settings['reset']['templatePathAndFilename']);
+                    $this->mailService->sendMail(['mailVariables' => (array_key_exists('mailVariables', $this->settings) ? $this->settings['mailVariables'] : false), 'host' => $host, 'domain' => $_SERVER['HTTP_HOST'], 'username' => $tokens->getFirst()->getUser()->getAccounts()[0]->getAccountIdentifier(), 'isInfo' => true], $this->settings['senderMail'], $this->settings['adminMail'], $subject, $this->settings['reset']['templatePathAndFilename']);
                 }
                 $this->tokenRepository->setInvalid($tokens->getFirst());
                 $this->addFlashMessage($this->translator->translateById('content.passwordReset', [], null, null, $sourceName = 'Main', $packageKey = 'NeosRulez.Neos.PasswordReset'), '', Message::SEVERITY_NOTICE);
