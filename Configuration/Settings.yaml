@@ -23,3 +23,5 @@ NeosRulez:
         templatePathAndFilename: 'resource://NeosRulez.Neos.PasswordReset/Private/Templates/Confirmation.html'
       reset:
         templatePathAndFilename: 'resource://NeosRulez.Neos.PasswordReset/Private/Templates/Reset.html'
+      mailVariables:
+        foo: 'bar' # Custom variables for your mails
