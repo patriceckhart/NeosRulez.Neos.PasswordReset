@@ -3,7 +3,7 @@
     <file original="" product-name="NeosRulez.Neos.PasswordReset" source-language="de" datatype="plaintext">
         <body>
 			<trans-unit id="content.confirmationSent" xml:space="preserve">
-				<source>Link wurde per Mail versendet</source>
+				<source>Ein Link zum Zurücksetzten des Passworts wurde per Mail zugestellt</source>
 			</trans-unit>
             <trans-unit id="content.credentialsSent" xml:space="preserve">
 				<source>Passwort zurückgesetzt</source>
