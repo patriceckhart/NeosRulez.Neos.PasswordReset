@@ -71,7 +71,7 @@ class Token
         $interval = $origin->diff($target);
 
         $minutes = $interval->i;
-        if($minutes < $this->settings['tokenLifetime']) {
+        if($minutes < $this->settings['tokenLifetime'] && $this->valid) {
             return true;
         }
         return false;
