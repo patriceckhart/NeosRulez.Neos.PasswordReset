@@ -16,12 +16,11 @@ NeosRulez:
   Neos:
     PasswordReset:
       senderMail: 'noreply@foo.com'
-      adminMail: 'admin@foo.com' # Disable (set it to false) if you not want to recieve info mails.
+#      adminMail: 'admin@foo.com'
       passwordLength: 8
-      tokenLifetime: 5 # Reset token lifetime in minutes
+      tokenLifetime: 5
       confirmation:
         templatePathAndFilename: 'resource://NeosRulez.Neos.PasswordReset/Private/Templates/Confirmation.html'
       reset:
         templatePathAndFilename: 'resource://NeosRulez.Neos.PasswordReset/Private/Templates/Reset.html'
-      mailVariables:
-        foo: 'bar' # Custom variables for your mails
+      mailVariables: []
