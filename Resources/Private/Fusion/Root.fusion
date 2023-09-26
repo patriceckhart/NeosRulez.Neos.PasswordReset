@@ -1,4 +1,4 @@
-include: resource://Neos.Neos/Private/Fusion/Backend/Views/Login.fusion
+include: resource://Neos.Neos/Private/Fusion/Backend/Root.fusion
 include: resource://Neos.Fusion/Private/Fusion/Root.fusion
 include: resource://Neos.Fusion.Form/Private/Fusion/Root.fusion
 
