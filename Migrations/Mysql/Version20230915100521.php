@@ -25,7 +25,7 @@ final class Version20230915100521 extends AbstractMigration
         );
 
         $this->addSql('CREATE TABLE neosrulez_neos_passwordreset_domain_model_token (persistence_object_identifier VARCHAR(40) NOT NULL, user VARCHAR(40) DEFAULT NULL, token VARCHAR(255) NOT NULL, valid TINYINT(1) NOT NULL, created DATETIME NOT NULL, INDEX IDX_8732F9A38D93D649 (user), PRIMARY KEY(persistence_object_identifier)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
-        $this->addSql('ALTER TABLE neosrulez_neos_passwordreset_domain_model_token ADD CONSTRAINT FK_8732F9A38D93D649 FOREIGN KEY (user) REFERENCES neos_neos_domain_model_user (persistence_object_identifier)');
+        $this->addSql('ALTER TABLE neosrulez_neos_passwordreset_domain_model_token ADD CONSTRAINT FK_8732F9A38D93D649 FOREIGN KEY (user) REFERENCES neos_neos_domain_model_user (persistence_object_identifier) ON DELETE CASCADE');
     }
 
     public function down(Schema $schema): void
