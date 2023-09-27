@@ -90,6 +90,7 @@ class Token
      * @var \Neos\Neos\Domain\Model\User
      * @ORM\ManyToOne(cascade={"persist"})
      * @ORM\Column(unique=false)
+     * @ORM\JoinColumn(onDelete="CASCADE")
      */
     protected $user;
 
